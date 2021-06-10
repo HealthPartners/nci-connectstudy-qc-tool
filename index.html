@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<body>
+  <!-- Sidebar -->
+  <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:25%">
+    <h3 class="w3-bar-item">API</h3>
+    <a href="#" class="w3-bar-item w3-button apiMenu w3-grey" data-api-code="0">getParticipantToken</a>
+    <a href="#" class="w3-bar-item w3-button apiMenu" data-api-code="1">submitParticipantsData</a>
+    <a href="#" class="w3-bar-item w3-button apiMenu" data-api-code="2">updateParticipantData</a>
+  </div>
+
+
+  <!-- Page Content -->
+  <div style="margin-left:25%">
+
+    <div class="w3-container w3-teal">
+      <h5>NCI Connect Study - API QC Tool </h5>
+    </div>
+
+
+    <div class="w3-container">
+      <textarea id="inputJSON" class="w3-input w3-border" rows="25" cols="6" style="resize:none"
+        spellcheck="false"></textarea>
+      <input type="hidden" id="apiSelected" value="0">
+      <button class="w3-btn w3-blue-grey" onclick="startQC()">Start QC Check</button>
+      <div id="qcResult"></div>
+    </div>
+
+  </div>
+  <script src="app.js"></script>
+</body>
+
+</html>
