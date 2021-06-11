@@ -101,13 +101,13 @@ function processInputMessage() {
 
     //TODO  - validate object size based on apiSelected
     if (apiSelected == 0 && objData.data.length > 1000) {
-        txt += 'The maximum limit allowed for the GetParticipantToken API is 1000' + "<br>";
+        txt += '<span style="color:red">The maximum limit allowed for the GetParticipantToken API is 1000</span>' + "<br>";
         txt += '_____________________________________________' + "<br>";
     } else if (apiSelected == 1 && objData.data.length > 500) {
-        txt += 'The maximum limit allowed for the submitParticipantsData API is 500' + "<br>";
+        txt += '<span style="color:red">The maximum limit allowed for the submitParticipantsData API is 500</span>' + "<br>";
         txt += '_____________________________________________' + "<br>";
     } else if (apiSelected == 2 && objData.data.length > 1) {
-        txt += 'The updateParticipantData API only allow one record' + "<br>";
+        txt += '<span style="color:red">The updateParticipantData API only allow one record</span>' + "<br>";
         txt += '_____________________________________________' + "<br>";
     }
     //below is to deal with individual persons {}  
@@ -119,16 +119,16 @@ function processInputMessage() {
             //token is for submit/updateParticipantData(apiSelect is 1 or 2) 
             tokenIncd = keys.includes('token');
             if (!tokenIncd && apiSelected == 1) {
-                txt += 'Token should be included in to the submitParticipantsData API' + "<br>";
+                txt += '<span style="color:red">Token should be included in the submitParticipantsData API</span>' + "<br>";
             }
             //go through every element for individual person with in {}
             for (var i = 0; i < keys.length; i++) {
                 var type = typeof data[j][keys[i]];
                 if (keys[i] == 'studyId') {
                     if (type !== 'string') {
-                        txt += keys[i] + ": " + data[j][keys[i]] + ' should be a string' + "<br>";
+                        txt += '<span style="color:red">' + keys[i] + ": " + data[j][keys[i]] + ' should be a string</span>' + "<br>";
                     } else if (data[j][keys[i]].startsWith("0")) {
-                        txt += keys[i] + ': ' + data[j][keys[i]] + ' should not start with 0' + "<br>";
+                        txt += '<span style="color:red">' + keys[i] + ': ' + data[j][keys[i]] + ' should not start with 0</span>' + "<br>";
                     } else {
                         txt += keys[i] + ": " + data[j][keys[i]] + ' is good to go' + "<br>";
                     }
@@ -136,23 +136,23 @@ function processInputMessage() {
                 } else if (keys[i] == 'token' || keys[i] == '749475364') {
                     // not allowed in getParticipantToken
                     if (apiSelected == 0) {
-                        txt += keys[i] + ': ' + data[j][keys[i]] + ' not a vaild value to send through getParticipantToken' + "<br>";
+                        txt += '<span style="color:red">' + keys[i] + ': ' + data[j][keys[i]] + ' not a vaild value to send through getParticipantToken</span>' + "<br>";
                     } else if (type == 'string') {
                         txt += keys[i] + ': ' + data[j][keys[i]] + ' is good to go' + "<br>";
                     } else {
-                        txt += keys[i] + ': ' + data[j][keys[i]] + ' should be a string ' + "<br>";
+                        txt += '<span style="color:red">' + keys[i] + ': ' + data[j][keys[i]] + ' should be a string</span>' + "<br>";
                     }
                     //integer check
                 } else {
                     // not allowed in getParticipantToken
                     if (apiSelected == 0) {
-                        txt += keys[i] + ': ' + data[j][keys[i]] + ' not a vaild value to send through getParticipantToken' + "<br>";
+                        txt += '<span style="color:red">' + keys[i] + ': ' + data[j][keys[i]] + ' not a vaild value to send through getParticipantToken</span>' + "<br>";
                     } else if (data[j][keys[i]] == undefined) {
-                        txt += keys[i] + ': ' + data[j][keys[i]] + ' missing' + "<br>";
+                        txt += '<span style="color:red">' + keys[i] + ': ' + data[j][keys[i]] + ' missing</span>' + "<br>";
                     } else if (type !== 'number') {
-                        txt += keys[i] + ': ' + data[j][keys[i]] + ' should be an integer type' + "<br>";
+                        txt += '<span style="color:red">' + keys[i] + ': ' + data[j][keys[i]] + ' should be an integer type</span>' + "<br>";
                     } else if (conceptIDs.indexOf(keys[i]) !== -1 && !(conceptIdsRange[keys[i]].includes(data[j][keys[i]]))) {
-                        txt += keys[i] + ':' + data[j][keys[i]] + ' out of range' + "<br>";
+                        txt += '<span style="color:red">' + keys[i] + ':' + data[j][keys[i]] + ' out of range</span>' + "<br>";
                     } else {
                         txt += keys[i] + ':' + data[j][keys[i]] + ' is good to go' + "<br>";
                     }
@@ -166,10 +166,10 @@ function processInputMessage() {
     if (apiSelected == 2) {
         keys = Object.keys(data);
         if (keys.length > 2) {
-            txt += 'There are only 2 elements - token and state allowed inside the data element for the updateParticipantData API' + "<br>";
+            txt += '<span style="color:red">There are only 2 elements - token and state allowed inside the data element for the updateParticipantData API</span>' + "<br>";
             txt += '_____________________________________________' + "<br>";
         } else if (!(keys.includes('token')) | !(keys.includes('state'))) {
-            txt += 'The updateParticipantData API must include both token and state elements' + "<br>";
+            txt += '<span style="color:red">The updateParticipantData API must include both token and state elements</span>' + "<br>";
             txt += '_____________________________________________' + "<br>";
         } else if (data['token']) {
             var type = typeof data['token'];
@@ -177,7 +177,7 @@ function processInputMessage() {
                 txt += 'Token: ' + data['token'] + ' is good to go' + "<br>";
                 txt += '_____________________________________________' + "<br>";
             } else {
-                txt += 'Token: ' + data['token'] + ' should be an integer type' + "<br>";
+                txt += '<span style="color:red">Token: ' + data['token'] + ' should be a string</span>' + "<br>";
                 txt += '_____________________________________________' + "<br>";
             }
         }
@@ -189,9 +189,9 @@ function processInputMessage() {
                 var stateType = typeof data['state'][stateKeys[m]];
                 if (stateKeys[m] == 'studyId') {
                     if (stateType !== 'string') {
-                        txt += stateKeys[m] + ": " + data['state'][stateKeys[m]] + ' should be a string' + "<br>";
+                        txt += '<span style="color:red">' + stateKeys[m] + ": " + data['state'][stateKeys[m]] + ' should be a string</span>' + "<br>";
                     } else if (data['state'][stateKeys[m]].startsWith("0")) {
-                        txt += stateKeys[m] + ': ' + data['state'][stateKeys[m]] + ' should not start with 0' + "<br>";
+                        txt += '<span style="color:red">' + stateKeys[m] + ': ' + data['state'][stateKeys[m]] + ' should not start with 0</span>' + "<br>";
                     } else {
                         txt += stateKeys[m] + ": " + data['state'][stateKeys[m]] + ' is good to go' + "<br>";
                     }
@@ -199,18 +199,18 @@ function processInputMessage() {
                     if (stateType == 'string') {
                         txt += stateKeys[m] + ': ' + data['state'][stateKeys[m]] + ' is good to go' + "<br>";
                     } else {
-                        txt += stateKeys[m] + ': ' + data['state'][stateKeys[m]] + ' should be a string ' + "<br>";
+                        txt += '<span style="color:red">' + stateKeys[m] + ': ' + data['state'][stateKeys[m]] + ' should be a string</span>' + "<br>";
                     }
                 } else if (stateKeys[m] == 'token') {
-                    txt += '"token" is not supposed to show up in "state"' + "<br>";
+                    txt += '<span style="color:red">"token" is not supposed to show up in "state"</span>' + "<br>";
 
                 } else {//integer check
                     if (data['state'][stateKeys[m]] == undefined) {
-                        txt += stateKeys[m] + ': ' + data['state'][stateKeys[m]] + ' missing' + "<br>";
+                        txt += '<span style="color:red">' + stateKeys[m] + ': ' + data['state'][stateKeys[m]] + ' missing</span>' + "<br>";
                     } else if (stateType !== 'number') {
-                        txt += stateKeys[m] + ': ' + data['state'][stateKeys[m]] + ' should be an integer type' + "<br>";
+                        txt += '<span style="color:red">' + stateKeys[m] + ': ' + data['state'][stateKeys[m]] + ' should be an integer type</span>' + "<br>";
                     } else if (conceptIDs.indexOf(stateKeys[m]) !== -1 && !(conceptIdsRange[stateKeys[m]].includes(data['state'][stateKeys[m]]))) {
-                        txt += stateKeys[m] + ':' + data['state'][stateKeys[m]] + ' out of range' + "<br>";
+                        txt += '<span style="color:red">' + stateKeys[m] + ':' + data['state'][stateKeys[m]] + ' out of range</span>' + "<br>";
                     } else {
                         txt += stateKeys[m] + ':' + data['state'][stateKeys[m]] + ' is good to go' + "<br>";
                     }
