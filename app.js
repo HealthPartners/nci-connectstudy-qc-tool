@@ -172,7 +172,7 @@ function processInputMessage() {
             //studyID is only for getParticpantToken(apiSelected=0)          
             studyidIncd = keys.includes('studyId');
             if ((!studyidIncd && apiSelected == 0) | (keys.length > 1 && apiSelected == 0)) {
-                txt += '<span style="color:red">studyid is the only element that can be included in getParticipantToken</span>' + "<br>";
+                txt += '<span style="color:red">studyId is the only element that can be included in getParticipantToken</span>' + "<br>";
             }
             //token is for submit/updateParticipantData(apiSelect is 1 or 2) 
             tokenIncd = keys.includes('token');
