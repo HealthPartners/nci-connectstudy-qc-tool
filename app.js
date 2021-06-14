@@ -96,26 +96,84 @@ function processInputMessage() {
         $('#qcResult').html(exception);
         return 1;
     }
-    data = objData["data"];
-    var txt = "";
 
+    //check JSON object should has  data element
+    var txt = "";
+    if (jQuery.isEmptyObject(objData)) {
+        txt += '<span style="color:red">The JSON object is empty</span>' + "<br>";
+        txt += '_____________________________________________' + "<br>";
+        $('#qcResult').html(txt);
+        return { error: true }
+    } else {
+        if (objData.hasOwnProperty('data')) {
+            data = objData["data"];
+        } else {
+            txt += '<span style="color:red">The JSON object should has the "data" element</span>' + "<br>";
+            txt += '_____________________________________________' + "<br>";
+            $('#qcResult').html(txt);
+            return { error: true }
+        }
+    }
+    //check JSON object.data return type.    
+    if (Array.isArray(data) && apiSelected == 2) {
+        txt += '<span style="color:red">The data element should has an object type</span>' + "<br>";
+        $('#qcResult').html(txt);
+        return { error: true }
+    } else if (!(Array.isArray(data)) && apiSelected <= 1) {
+        txt += '<span style="color:red">The data element should has an array type</span>' + "<br>";
+        $('#qcResult').html(txt);
+        return { error: true }
+    }
     //TODO  - validate object size based on apiSelected
     if (apiSelected == 0 && objData.data.length > 1000) {
         txt += '<span style="color:red">The maximum limit allowed for the GetParticipantToken API is 1000</span>' + "<br>";
         txt += '_____________________________________________' + "<br>";
+        $('#qcResult').html(txt);
+        return { error: true }
+    } else if (apiSelected == 0 && objData.data.length == 0) {
+        console.log("check array length " + objData.data.length);
+        txt += '<span style="color:red">GetParticipantToken must only have the studyID element</span>' + "<br>";
+        txt += '_____________________________________________' + "<br>";
+        $('#qcResult').html(txt);
+        return { error: true }
     } else if (apiSelected == 1 && objData.data.length > 500) {
         txt += '<span style="color:red">The maximum limit allowed for the submitParticipantsData API is 500</span>' + "<br>";
         txt += '_____________________________________________' + "<br>";
-    } else if (apiSelected == 2 && objData.data.length > 1) {
-        txt += '<span style="color:red">The updateParticipantData API only allow one record</span>' + "<br>";
+        $('#qcResult').html(txt);
+        return { error: true }
+    } else if (apiSelected == 1 && objData.data.length == 0) {
+        txt += '<span style="color:red">JSON data array must have at least one record</span>' + "<br>";
         txt += '_____________________________________________' + "<br>";
+        $('#qcResult').html(txt);
+        return { error: true }
+    } else if (apiSelected == 2 && (typeof objData.data !== 'object')) {
+        txt += '<span style="color:red">The data element must be an object</span>' + "<br>";
+        txt += '_____________________________________________' + "<br>";
+        $('#qcResult').html(txt);
+        return { error: true }
+    } else if (apiSelected == 2 && jQuery.isEmptyObject(objData.data)) {
+        console.log("check " + jQuery.isEmptyObject(objData.data));
+        txt += '<span style="color:red">The data element must have token and state elements</span>' + "<br>";
+        txt += '_____________________________________________' + "<br>";
+        $('#qcResult').html(txt);
+        return { error: true }
     }
+
     //below is to deal with individual persons {}  
     if (apiSelected <= 1) { // for 
         for (var j = 0; j < objData.data.length; j++) {
+            if (typeof data[j] !== 'object') {
+                txt += '<span style="color:red">The elements inside the data array must be objects</span>' + "<br>";
+                $('#qcResult').html(txt);
+                return { error: true }
+            }
+            
             keys = Object.keys(data[j]);
             //studyID is only for getParticpantToken(apiSelected=0)          
             studyidIncd = keys.includes('studyId');
+            if ((!studyidIncd && apiSelected == 0) | (keys.length > 1 && apiSelected == 0)) {
+                txt += '<span style="color:red">studyid is the only element that can be included in getParticipantToken</span>' + "<br>";
+            }
             //token is for submit/updateParticipantData(apiSelect is 1 or 2) 
             tokenIncd = keys.includes('token');
             if (!tokenIncd && apiSelected == 1) {
@@ -169,7 +227,7 @@ function processInputMessage() {
             txt += '<span style="color:red">There are only 2 elements - token and state allowed inside the data element for the updateParticipantData API</span>' + "<br>";
             txt += '_____________________________________________' + "<br>";
         } else if (!(keys.includes('token')) | !(keys.includes('state'))) {
-            txt += '<span style="color:red">The updateParticipantData API must include both token and state elements</span>' + "<br>";
+            txt += '<span style="color:red">The data element must include both token and state elements</span>' + "<br>";
             txt += '_____________________________________________' + "<br>";
         } else if (data['token']) {
             var type = typeof data['token'];
@@ -181,7 +239,19 @@ function processInputMessage() {
                 txt += '_____________________________________________' + "<br>";
             }
         }
-        if (data['state']) {
+        if ((typeof data['state'] == 'object' && Array.isArray(data['state'])) | (typeof data['state'] !== 'object')) {
+            txt += '<span style="color:red">The state element must be an object</span>' + "<br>";
+            txt += '_____________________________________________' + "<br>";
+            $('#qcResult').html(txt);
+            return { error: true }
+        }
+        if (typeof data['state'] == 'object' && !(Array.isArray(data['state']))) {
+            if (jQuery.isEmptyObject(objData.data['state'])) {
+                txt += '<span style="color:red">The state element must have one at least one record</span>' + "<br>";
+                txt += '_____________________________________________' + "<br>";
+                $('#qcResult').html(txt);
+                return { error: true }
+            }
             txt += 'Below is data check for the state property:' + "<br>" + "<br>";
             var stateObj = data['state'];
             stateKeys = Object.keys(data['state']);
