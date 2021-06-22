@@ -19,7 +19,16 @@ function startQC() {
         "wfhp": "481139103", "autover": "444699761", "outreach": "188797763", "mannual": "953614051",
         "duptype": "148197146", "updatetype": "793822265", "fnamemch": "147176963", "lnamemch": "557461333",
         "dobmch": "725929722", "pinmch": "711794630", "tokenmch": "679832994", "zipmch": "559534463",
-        "sitemch": "570452130", "agemch": "629484663", "cstatusmch": "547895941"
+        "sitemch": "570452130", "agemch": "629484663", "cstatusmch": "547895941", "sopMaxNum": "875549268",
+        "preOptOut": "158291096", "notIntrstd": "196038514", "tooBusy": "873405723", "privacy": "517101990",
+        "tooManyCtct": "347614743", "notCmpltAct": "535928798", "notJoinOth": "897366187", "notImptnt": "719451909",
+        "noDesire": "377633816", "noLongTerm": "211023960", "tooMuchTime": "209509101", "noBio": "363026564",
+        "lowPay": "405352246", "notElig": "755545718", "noGntc": "831137710", "tooSick": "496935183",
+        "noInt": "491099823", "noLine": "836460125", "worry": "163534562", "infoOnline": "331787113",
+        "noSurvey": "705732561", "noAccs": "381509125", "noGov": "497530905", "noTrust": "627995442",
+        "noShare": "208102461", "noSecurity": "579618065", "insurance": "702433259", "employer": "771146804",
+        "discrim": "163284008", "profit": "387198193", "othPriCon": "566047367", "covid": "400259098",
+        "refuse": "260703126", "unable": "744197145", "noReason": "950040334"
     };
     let apiCallPromiseList = [];
     for (var key in lookupMap) {
@@ -147,6 +156,7 @@ function processInputMessage() {
         $('#qcResult').html(txt);
         return { error: true }
     } else if (apiSelected == 2 && (typeof objData.data !== 'object')) {
+        console.log(typeof objData.data);
         txt += '<span style="color:red">The data element must be an object</span>' + "<br>";
         txt += '_____________________________________________' + "<br>";
         $('#qcResult').html(txt);
@@ -167,7 +177,7 @@ function processInputMessage() {
                 $('#qcResult').html(txt);
                 return { error: true }
             }
-            
+
             keys = Object.keys(data[j]);
             //studyID is only for getParticpantToken(apiSelected=0)          
             studyidIncd = keys.includes('studyId');
@@ -191,7 +201,7 @@ function processInputMessage() {
                         txt += keys[i] + ": " + data[j][keys[i]] + ' is good to go' + "<br>";
                     }
                     // token and NCI version
-                } else if (keys[i] == 'token' || keys[i] == '749475364') {
+                } else if (keys[i] == 'token' || keys[i] == '749475364' ||  keys[i] == '415693436') {
                     // not allowed in getParticipantToken
                     if (apiSelected == 0) {
                         txt += '<span style="color:red">' + keys[i] + ': ' + data[j][keys[i]] + ' not a vaild value to send through getParticipantToken</span>' + "<br>";
@@ -199,9 +209,8 @@ function processInputMessage() {
                         txt += keys[i] + ': ' + data[j][keys[i]] + ' is good to go' + "<br>";
                     } else {
                         txt += '<span style="color:red">' + keys[i] + ': ' + data[j][keys[i]] + ' should be a string</span>' + "<br>";
-                    }
-                    //integer check
-                } else {
+                    }                
+                } else {//integer check
                     // not allowed in getParticipantToken
                     if (apiSelected == 0) {
                         txt += '<span style="color:red">' + keys[i] + ': ' + data[j][keys[i]] + ' not a vaild value to send through getParticipantToken</span>' + "<br>";
@@ -265,7 +274,7 @@ function processInputMessage() {
                     } else {
                         txt += stateKeys[m] + ": " + data['state'][stateKeys[m]] + ' is good to go' + "<br>";
                     }
-                } else if (stateKeys[m] == '749475364') {// NCI version
+                } else if (stateKeys[m] == '749475364' || stateKeys[m] == '415693436') {// NCI version or please specify
                     if (stateType == 'string') {
                         txt += stateKeys[m] + ': ' + data['state'][stateKeys[m]] + ' is good to go' + "<br>";
                     } else {
