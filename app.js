@@ -200,8 +200,8 @@ function processInputMessage() {
                     } else {
                         txt += keys[i] + ": " + data[j][keys[i]] + ' is good to go' + "<br>";
                     }
-                    // token and NCI version
-                } else if (keys[i] == 'token' || keys[i] == '749475364' ||  keys[i] == '415693436') {
+                    // token and NCI version and Please specify 
+                } else if (keys[i] == 'token' || keys[i] == '749475364' || keys[i] == '415693436') {//per Vijay request on Jun 18, 2021
                     // not allowed in getParticipantToken
                     if (apiSelected == 0) {
                         txt += '<span style="color:red">' + keys[i] + ': ' + data[j][keys[i]] + ' not a vaild value to send through getParticipantToken</span>' + "<br>";
@@ -209,11 +209,13 @@ function processInputMessage() {
                         txt += keys[i] + ': ' + data[j][keys[i]] + ' is good to go' + "<br>";
                     } else {
                         txt += '<span style="color:red">' + keys[i] + ': ' + data[j][keys[i]] + ' should be a string</span>' + "<br>";
-                    }                
+                    }
                 } else {//integer check
                     // not allowed in getParticipantToken
                     if (apiSelected == 0) {
                         txt += '<span style="color:red">' + keys[i] + ': ' + data[j][keys[i]] + ' not a vaild value to send through getParticipantToken</span>' + "<br>";
+                    } else if (keys[i] == '158291096' || keys[i] == '875549268') {//per Vijay request on Jun 25, 2021
+                        txt += '<span style="color:red">' + keys[i] + ': ' + data[j][keys[i]] + ' not a vaild value to send through submitParticipantsData. Only allowed through updateParticipantData</span>' + "<br>";
                     } else if (data[j][keys[i]] == undefined) {
                         txt += '<span style="color:red">' + keys[i] + ': ' + data[j][keys[i]] + ' missing</span>' + "<br>";
                     } else if (type !== 'number') {
@@ -274,7 +276,7 @@ function processInputMessage() {
                     } else {
                         txt += stateKeys[m] + ": " + data['state'][stateKeys[m]] + ' is good to go' + "<br>";
                     }
-                } else if (stateKeys[m] == '749475364' || stateKeys[m] == '415693436') {// NCI version or please specify
+                } else if (stateKeys[m] == '749475364' || stateKeys[m] == '415693436') {// NCI version or please specify. Per Vijay on Jun 18, 2021
                     if (stateType == 'string') {
                         txt += stateKeys[m] + ': ' + data['state'][stateKeys[m]] + ' is good to go' + "<br>";
                     } else {
