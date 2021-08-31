@@ -1,5 +1,12 @@
 {
+  "name": "nciconnectstudyqctool",
+  "version": "0.0.1",
+  "description": "A simple Node app helps to validate api message format.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
-    "node-cache": "^5.1.2"
+   "node-cache": "^5.1.2"
   }
 }
