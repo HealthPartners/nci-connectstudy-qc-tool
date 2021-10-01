@@ -14,7 +14,7 @@ function startQC() {
     // Initialize the engine      
     var lookupMap = {
         "age": "934298480", "gender": "706256705", "race": "849518448", "racesh": "119643471",
-        "ethsh": "538553381", "racehf": "684926335", "ethhf": "527823810", "sexkp": "678756255",
+        "ethsh": "538553381", "racehf": "684926335", "ethhf": "527823810",  
         "sexsh": "435027713", "memstatus": "477091792", "cmptype": "667474224",
         "wfhp": "481139103", "autover": "444699761", "outreach": "188797763", "mannual": "953614051",
         "duptype": "148197146", "updatetype": "793822265", "fnamemch": "147176963", "lnamemch": "557461333",
